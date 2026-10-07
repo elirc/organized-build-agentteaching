@@ -1,5 +1,10 @@
 # Junior-To-Mid-Level Learning Plan
 
+> This repository is a snapshot of [elirc/3buildagentteaching](https://github.com/elirc/3buildagentteaching) taken right after its onboarding docs were added and before its 20-story backlog was merged. The 14-day plan below still works as a reading path, but several
+> exercises in the later sections describe things that already exist in this
+> code. Those now say so and point at the existing version, because reading
+> and extending real code teaches more than rebuilding it.
+
 ## 14-Day Study Plan
 
 Day 1: Read the README and architecture overview. Run the app and seed data.
@@ -48,25 +53,40 @@ Day 14: Present the architecture, risks, and extension plan as if in an intervie
 
 ## Agent Extension Exercises
 
-- Add a Guardian Communication Draft Agent.
-- Add a Lesson Plan Review Agent with deterministic rubric matching.
-- Add agent golden-output tests.
-- Add an approval flag before creating interventions.
+- ~~Add a Guardian Communication Draft Agent~~ - already exists
+  (`packages/agents/src/guardian-communication-agent.ts`). Instead: read it
+  and list every input field it uses.
+- Add a Lesson Plan Review Agent with deterministic rubric matching - still
+  the best open exercise; `docs/06-extension-projects.md` says what to copy
+  and gives the **Check** for done.
+- Add agent golden-output tests - still open. `packages/agents/src/agents.test.ts`
+  has 8 cases and no fixture files.
+- Add an approval flag before creating interventions - read the existing
+  `InterventionApproval` model and `packages/domain/src/approvals.ts` first,
+  then decide what "before creating" should add.
 
 ## Architecture Review Exercises
 
 - Identify logic that should stay out of React.
-- Identify where RBAC is too light.
-- Propose a background worker.
-- Propose multi-tenant school support.
+- Identify where RBAC is too light - start from `assertCan`
+  (`packages/application/src/context.ts:6`) and find the paths that skip it.
+- Propose a background worker - a lock-based `worker-service.ts` exists in
+  `packages/application/src/services/`. Instead: propose how to move it into
+  its own process, since `apps/` holds only `web`.
+- Propose multi-tenant school support - still open, and still the best
+  design exercise here.
 
 ## Data Modeling Exercises
 
-- Add terms/academic years.
-- Add rubrics.
-- Add guardian-to-student relationships.
-- Add many schools or districts.
-- Add notification delivery records.
+- ~~Add terms/academic years~~ - `AcademicTerm` and `GradingPeriod` models
+  exist, with a `/terms` page. Instead: trace how a section relates to its term.
+- ~~Add rubrics~~ - `Rubric`, `RubricCriterion` and `SubmissionCriterionScore`
+  exist. Instead: add one rubric edge-case test (all criteria unscored).
+- ~~Add guardian-to-student relationships~~ - `Guardian` and `StudentGuardian`
+  exist. Instead: find every query that reads them.
+- Add many schools or districts - still open.
+- ~~Add notification delivery records~~ - `Notification` has `channel`,
+  `status` and `readAt`. Instead: find which code paths create one.
 
 ## Interview Talking Points
 
